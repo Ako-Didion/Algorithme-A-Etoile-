@@ -1,0 +1,10 @@
+# Compiled binaries
+teste_A_etoile
+*.o
+*.exe
+*.out
+
+# Editor files
+*.swp
+*~
+.DS_Store
