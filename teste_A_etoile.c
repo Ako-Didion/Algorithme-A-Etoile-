@@ -39,7 +39,12 @@ ListeNoeuds* creer_liste() {
 void ajouter_noeud(ListeNoeuds* liste, Noeud* noeud) {
     if (liste->taille >= liste->capacite) {
         liste->capacite *= 2;
-        liste->noeuds = (Noeud**)realloc(liste->noeuds, sizeof(Noeud*) * liste->capacite);
+        Noeud** nouveau = (Noeud**)realloc(liste->noeuds, sizeof(Noeud*) * liste->capacite);
+        if (nouveau == NULL) {
+            fprintf(stderr, "Erreur d'allocation memoire\n");
+            exit(1);
+        }
+        liste->noeuds = nouveau;
     }
     liste->noeuds[liste->taille++] = noeud;
 }
@@ -82,6 +87,9 @@ Noeud* creer_noeud(Position pos, int g, int h, Noeud* parent) {
 }
 
 int trouver_min_f(ListeNoeuds* liste) {
+    if (liste->taille == 0) {
+        return -1;
+    }
     int min_index = 0;
     int min_f = liste->noeuds[0]->f;
     for (int i = 1; i < liste->taille; i++) {
@@ -216,7 +224,7 @@ int main() {
     
     afficher_grille(depart, arrivee);
     
-    printf("Recherche du chemin de (%d, %d) a (%d, %d)...\n\n", 
+    printf("Recherche du chemin de (%d, %d) à (%d, %d)...\n\n", 
            depart.x, depart.y, arrivee.x, arrivee.y);
     
     a_etoile(depart, arrivee);
@@ -229,7 +237,7 @@ int main() {
     arrivee.y = 5;
     
     afficher_grille(depart, arrivee);
-    printf("Recherche du chemin de (%d, %d) a (%d, %d)...\n\n", 
+    printf("Recherche du chemin de (%d, %d) à (%d, %d)...\n\n", 
            depart.x, depart.y, arrivee.x, arrivee.y);
     a_etoile(depart, arrivee);
     
@@ -244,7 +252,7 @@ int main() {
     arrivee.y = 9;
     
     afficher_grille(depart, arrivee);
-    printf("Recherche du chemin de (%d, %d) a (%d, %d)...\n\n", 
+    printf("Recherche du chemin de (%d, %d) à (%d, %d)...\n\n", 
            depart.x, depart.y, arrivee.x, arrivee.y);
     a_etoile(depart, arrivee);
     
